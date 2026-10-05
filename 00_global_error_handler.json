@@ -1,0 +1,133 @@
+{
+  "name": "5 - Global Error Handler",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "7a88d80d-8a5d-5ea8-bfa7-2a234f82138e",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "861a3586-77e3-52d7-a651-aa148df15845",
+              "name": "adminEmail",
+              "value": "admin@youragency.pk",
+              "type": "string"
+            },
+            {
+              "id": "1485522e-08d5-5701-ba15-714f935c64a5",
+              "name": "senderName",
+              "value": "Your Agency Automation",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cb8f350f-e4f5-59e5-a540-1b6321ad1ac2",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const esc = s => String(s ?? '').replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]));\nconst layout = (agency, bodyHtml) => `<div style=\"font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.55;color:#1f2937;max-width:620px\">${bodyHtml}<p style=\"margin-top:28px\">Best regards,<br><strong>${esc(agency)}</strong></p></div>`;\n\nconst e = $input.first().json;\nconst ex = e.execution || {};\nconst wf = (e.workflow && e.workflow.name) || 'unknown workflow';\nconst html = `<h3>Workflow failed: ${esc(wf)}</h3>\n<p><strong>Failed node:</strong> ${esc(ex.lastNodeExecuted || 'n/a')}</p>\n<p><strong>Error:</strong> ${esc((ex.error && ex.error.message) || 'n/a')}</p>\n<p><strong>Execution:</strong> ${ex.url ? `<a href=\"${esc(ex.url)}\">${esc(ex.id)}</a>` : esc(ex.id || 'n/a')}</p>\n<p>Time: ${new Date().toISOString()}</p>`;\nreturn [{ json: { subject: `[n8n ERROR] ${wf}`, html } }];"
+      },
+      "id": "9cd37c4e-ea81-59c2-b166-18a5db94e9ad",
+      "name": "Format Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Config').first().json.adminEmail }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "html",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "={{ $('Config').first().json.senderName }}"
+        }
+      },
+      "id": "eda3859f-ce7e-5cb5-b137-1f9f733e2ff3",
+      "name": "Email Admin",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        660,
+        200
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "REPLACE_ME",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "Format Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Error": {
+      "main": [
+        [
+          {
+            "node": "Email Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Karachi",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  },
+  "versionId": "1846f915-b4b8-5ee5-94fc-a4f3f35f7d63",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": [],
+  "pinData": {}
+}
