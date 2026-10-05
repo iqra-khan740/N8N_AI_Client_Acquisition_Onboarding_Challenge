@@ -62,8 +62,8 @@ Suggested order: send a lead → send a reply for each outcome (interested, nego
 ### Workflow 4: Weekly Management Report
 ![Workflow 4: Weekly Management Report](https://github.com/iqra-khan740/N8N_AI_Client_Acquisition_Onboarding_Challenge/blob/main/subworkflow4.jpeg)
 
-### Workflow 5: Weekly Management Report
-![Workflow 5: 00_global_error_handler.json](https://github.com/iqra-khan740/N8N_AI_Client_Acquisition_Onboarding_Challenge/blob/main/)
+### Workflow 5: Global_Error_Handler
+![Workflow 5: 00_global_error_handler.json](https://github.com/iqra-khan740/N8N_AI_Client_Acquisition_Onboarding_Challenge/blob/main/subworkflow5-erroehandler.JPG)
 
 ## Error handling
 
