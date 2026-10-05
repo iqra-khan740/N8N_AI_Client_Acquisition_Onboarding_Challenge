@@ -64,5 +64,3 @@ Suggested order: send a lead → send a reply for each outcome (interested, nego
 ## Error handling
 
 Each AI, Airtable, Gmail, Drive and Calendar node retries on failure, and any execution that still fails triggers the global error workflow (`00_global_error_handler.json`), which emails the admin the workflow name, failed node and error message.
-
-See `CHANGELOG.md` for the fixes made to the original exports.
