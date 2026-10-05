@@ -50,16 +50,16 @@ Suggested order: send a lead → send a reply for each outcome (interested, nego
 ## Screenshots
 
 ### Workflow 1: New Lead Intake
-![Workflow 1: New Lead Intake](docs/screenshots/subworkflow1.jpeg)
+![Workflow 1: New Lead Intake](https://github.com/iqra-khan740/N8N_AI_Client_Acquisition_Onboarding_Challenge/blob/main/subworkflow1.jpeg)
 
 ### Workflow 2: Client Reply Handler
-![Workflow 2: Client Reply Handler](docs/screenshots/subworkflow2.jpeg)
+![Workflow 2: Client Reply Handler](https://github.com/iqra-khan740/N8N_AI_Client_Acquisition_Onboarding_Challenge/blob/main/subworkflow2.jpeg)
 
 ### Workflow 3: Automated Follow-Up
-![Workflow 3: Automated Follow-Up](docs/screenshots/subworkflow3.jpeg)
+![Workflow 3: Automated Follow-Up](https://github.com/iqra-khan740/N8N_AI_Client_Acquisition_Onboarding_Challenge/blob/main/subworkflow3.jpeg)
 
 ### Workflow 4: Weekly Management Report
-![Workflow 4: Weekly Management Report](docs/screenshots/subworkflow4.jpeg)
+![Workflow 4: Weekly Management Report](https://github.com/iqra-khan740/N8N_AI_Client_Acquisition_Onboarding_Challenge/blob/main/subworkflow4.jpeg)
 
 ## Error handling
 
