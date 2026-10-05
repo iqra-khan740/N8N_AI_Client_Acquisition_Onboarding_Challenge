@@ -1,0 +1,584 @@
+{
+  "name": "Sub-workflow3",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 22,
+              "triggerAtMinute": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        -944
+      ],
+      "id": "cdd82d4d-7be5-4717-ba36-c6a19fefe3a8",
+      "name": "Schedule Trigger",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "applNYVdAtxqMUSR6",
+          "mode": "list",
+          "cachedResultName": " AI Client CRM",
+          "cachedResultUrl": "https://airtable.com/applNYVdAtxqMUSR6"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblZpiDHgYzXABods",
+          "mode": "list",
+          "cachedResultName": "Clients",
+          "cachedResultUrl": "https://airtable.com/applNYVdAtxqMUSR6/tblZpiDHgYzXABods"
+        },
+        "filterByFormula": "OR({Status}=\"Proposal Sent\", {Status}=\"Negotiation\")",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        -944
+      ],
+      "id": "6bcfb4d2-8fbf-48bd-bbf0-f1f0f2351d94",
+      "name": "Search records",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "wWYq46AuxUeC4aw4",
+          "name": "Airtable account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        448,
+        -944
+      ],
+      "id": "de16c6d6-c5dd-498b-9498-4dd91d58574a",
+      "name": "Loop Over Items",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const lastEmail = new Date($json[\"Last Email Sent\"]);\nconst today = new Date();\n\nconst diff = Math.floor(\n  (today - lastEmail) / (1000 * 60 * 60 * 24)\n);\n\nreturn [{\n  json: {\n    ...$json,\n    daysPassed: diff\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        -1024
+      ],
+      "id": "803e25ef-1e02-4e56-bd11-bcb8fb5c0836",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c1aa6e78-a137-438a-818f-db726ee030e8",
+              "leftValue": "={{ $json.fields['Follow-up Count'] >= 3 }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1120,
+        -1024
+      ],
+      "id": "01829110-dc8b-43c0-ae6a-d6b7f63d89dd",
+      "name": "Followup>3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "applNYVdAtxqMUSR6",
+          "mode": "list",
+          "cachedResultName": " AI Client CRM",
+          "cachedResultUrl": "https://airtable.com/applNYVdAtxqMUSR6"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblZpiDHgYzXABods",
+          "mode": "list",
+          "cachedResultName": "Clients",
+          "cachedResultUrl": "https://airtable.com/applNYVdAtxqMUSR6/tblZpiDHgYzXABods"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Cold Lead"
+          },
+          "matchingColumns": [
+            "Client_id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Client_id",
+              "displayName": "Client_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Project Details",
+              "displayName": "Project Details",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "AI Project Summary",
+              "displayName": "AI Project Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "New Lead",
+                  "value": "New Lead"
+                },
+                {
+                  "name": "Proposal Sent",
+                  "value": "Proposal Sent"
+                },
+                {
+                  "name": "Negotiation",
+                  "value": "Negotiation"
+                },
+                {
+                  "name": "Follow Up 1",
+                  "value": "Follow Up 1"
+                },
+                {
+                  "name": "Follow Up 2",
+                  "value": "Follow Up 2"
+                },
+                {
+                  "name": "Call Scheduled",
+                  "value": "Call Scheduled"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                },
+                {
+                  "name": "Cold Lead",
+                  "value": "Cold Lead"
+                },
+                {
+                  "name": "Active",
+                  "value": "Active"
+                },
+                {
+                  "name": "On Hold",
+                  "value": "On Hold"
+                },
+                {
+                  "name": "Interested",
+                  "value": "Interested"
+                },
+                {
+                  "name": "Rejected",
+                  "value": "Rejected"
+                },
+                {
+                  "name": "Ready to Proceed",
+                  "value": "Ready to Proceed"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Last Email Sent",
+              "displayName": "Last Email Sent",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Follow-up Count",
+              "displayName": "Follow-up Count",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Drive Folder Link",
+              "displayName": "Drive Folder Link",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Meeting Date",
+              "displayName": "Meeting Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Created At",
+              "displayName": "Created At",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        -1120
+      ],
+      "id": "a5280196-09e9-4488-9714-e4a75d8bb814",
+      "name": "Update record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "wWYq46AuxUeC4aw4",
+          "name": "Airtable account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Search records').item.json.fields.Email }}",
+        "subject": "Followup",
+        "message": "Followup",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        -928
+      ],
+      "id": "9d6ca401-7961-43bd-b627-cbe2dbb88fd7",
+      "name": "Send a message",
+      "webhookId": "b93e6e88-9c0a-4f72-be26-06c958f73416",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yr2reHWNha561RM6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1568,
+        -928
+      ],
+      "id": "f634d4a7-21e7-4e4d-85cd-62de144d56af",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c4b8c0c8-48dc-48cd-8114-0fd12c2f5726",
+              "leftValue": "={{ $json.fields['Days Passed']>2 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        -1024
+      ],
+      "id": "d4c11199-c48e-4919-b7a1-9c7ba21dc663",
+      "name": "days passes>2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Search records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "days passes>2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Followup>3": {
+      "main": [
+        [
+          {
+            "node": "Update record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "days passes>2": {
+      "main": [
+        [
+          {
+            "node": "Followup>3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "4129d6c5-d849-4f56-a228-41682f90c118",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "241b221964b71f176e86e7b354eb5999b7543ad5b3638a94b8a49618e30f5672"
+  },
+  "nodeGroups": [],
+  "id": "p7jm3M5lkDj2W5He",
+  "tags": [
+    {
+      "updatedAt": "2026-07-18T14:47:01.591Z",
+      "createdAt": "2026-07-18T14:47:01.591Z",
+      "id": "iDrHUxDEQ55QccCT",
+      "name": "Internship/YouTube"
+    }
+  ]
+}
