@@ -12,6 +12,7 @@ A client lifecycle system with **no frontend**: every request is simulated in Po
 | 2 | `Subworkflow2.json` | Webhook `POST /client-reply` | AI classifies the reply and routes it. *Ready to proceed* → calendar event for the next weekday at 11:00 PKT, confirmation email, **Call Scheduled**. *Negotiating* → **Negotiation**. *Rejected* → **Lost**. *Interested* → status unchanged, follow-up clock reset |
 | 3 | `Sub-workflow3.json` | Schedule, daily 22:01 | Finds **Proposal Sent / Negotiation / Follow Up 1 / Follow Up 2** leads with 3+ days since the last email. Sends follow-up #1, #2 or #3 (status **Follow Up 1** then **Follow Up 2**, count incremented, date updated). After 3 follow-ups and 3 more silent days, the lead becomes **Cold Lead** and gets no more emails |
 | 4 | `Sub workflow 4.json` | Schedule, Mondays 09:01 | Counts leads by status from Airtable, has AI write a management email, and sends it |
+| 5 | `00_global_error_handler.json` | Error Notifier | Notifies the Admin on the mentioned Email |
 
 ## Airtable
 
@@ -60,6 +61,9 @@ Suggested order: send a lead → send a reply for each outcome (interested, nego
 
 ### Workflow 4: Weekly Management Report
 ![Workflow 4: Weekly Management Report](https://github.com/iqra-khan740/N8N_AI_Client_Acquisition_Onboarding_Challenge/blob/main/subworkflow4.jpeg)
+
+### Workflow 5: Weekly Management Report
+![Workflow 5: 00_global_error_handler.json](https://github.com/iqra-khan740/N8N_AI_Client_Acquisition_Onboarding_Challenge/blob/main/)
 
 ## Error handling
 
