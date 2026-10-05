@@ -8,10 +8,10 @@ A client lifecycle system with **no frontend**: every request is simulated in Po
 
 | # | File | Trigger | What it does |
 |---|------|---------|--------------|
-| 1 | `01_new_lead_intake.json` | Webhook `POST /new-lead` | AI summarises the project and drafts the proposal, creates a Drive folder, sends the proposal email, stores the lead in Airtable as **Proposal Sent** |
-| 2 | `02_client_reply_handler.json` | Webhook `POST /client-reply` | AI classifies the reply and routes it. *Ready to proceed* → calendar event for the next weekday at 11:00 PKT, confirmation email, **Call Scheduled**. *Negotiating* → **Negotiation**. *Rejected* → **Lost**. *Interested* → status unchanged, follow-up clock reset |
-| 3 | `03_automated_follow_up.json` | Schedule, daily 22:01 | Finds **Proposal Sent / Negotiation / Follow Up 1 / Follow Up 2** leads with 3+ days since the last email. Sends follow-up #1, #2 or #3 (status **Follow Up 1** then **Follow Up 2**, count incremented, date updated). After 3 follow-ups and 3 more silent days, the lead becomes **Cold Lead** and gets no more emails |
-| 4 | `04_weekly_management_report.json` | Schedule, Mondays 09:01 | Counts leads by status from Airtable, has AI write a management email, and sends it |
+| 1 | `SUB-Workflow1.json` | Webhook `POST /new-lead` | AI summarises the project and drafts the proposal, creates a Drive folder, sends the proposal email, stores the lead in Airtable as **Proposal Sent** |
+| 2 | `Subworkflow2.json` | Webhook `POST /client-reply` | AI classifies the reply and routes it. *Ready to proceed* → calendar event for the next weekday at 11:00 PKT, confirmation email, **Call Scheduled**. *Negotiating* → **Negotiation**. *Rejected* → **Lost**. *Interested* → status unchanged, follow-up clock reset |
+| 3 | `Sub-workflow3.json` | Schedule, daily 22:01 | Finds **Proposal Sent / Negotiation / Follow Up 1 / Follow Up 2** leads with 3+ days since the last email. Sends follow-up #1, #2 or #3 (status **Follow Up 1** then **Follow Up 2**, count incremented, date updated). After 3 follow-ups and 3 more silent days, the lead becomes **Cold Lead** and gets no more emails |
+| 4 | `Sub workflow 4.json` | Schedule, Mondays 09:01 | Counts leads by status from Airtable, has AI write a management email, and sends it |
 
 ## Airtable
 
